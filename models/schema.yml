@@ -1,0 +1,183 @@
+version: 2
+models:
+- name: dim_customers
+  description: |
+    This dimension table contains cleaned and enriched customer information.
+    The table includes customerid as the primary key along with email and customr location details
+  columns: 
+  - name: customerid
+    description: Unique identifier for each customer.
+    tests:
+      - unique
+      - not_null
+  - name: customer_firstname
+    description: First name of the customer.
+    tests:
+      - not_null
+  - name: customer_lastname
+    description: Last name of the customer.
+    tests:
+      - not_null
+  - name: customer_email
+    description: Email address of the customer.
+    tests:
+      - not_null
+      - unique
+  - name: customer_location
+    description: Geographic location of the customer.
+    tests:
+      - not_null
+  - name: customer_signupdate
+    description: Date when the customer signed up.
+    tests:
+      - not_null
+
+- name: dim_orders
+  description: Dimension table containing descriptive order details.
+  columns:
+  - name: orderid
+    description: Unique identifier for each order.
+    tests:
+      - unique
+      - not_null
+  - name: paymentmethod
+    description: Method of payment used for the order.
+    tests:
+      - not_null
+
+- name: fact_sales
+  description: Fact table capturing sales transactions.
+  columns:
+  - name: sales_pk
+    description:  a surrogate key for the sales fact table.It is a combination of orderid, productid and customerid
+    tests:
+      - unique
+      - not_null
+  - name: customerid
+    description: Foreign key linking to the dim_customers table.
+    tests:
+      - not_null
+  - name: orderid
+    description: Foreign key linking to the dim_orders table.
+    tests:
+      - not_null
+  - name: customer_signupdate
+    description: Date when the customer signed up.
+    tests:
+      - not_null
+  - name: productid
+    description: Foreign key linking to the dim_products table.
+    tests:
+      - not_null
+  - name: unit_price
+    description: Price per unit of the product at the time of sale.
+    tests:
+      - not_null
+  - name: order_quantity
+    description: Number of units sold in the transaction.
+    tests:
+      - not_null
+  - name: total_amount
+    description: Total amount for the sales transaction.
+    tests:
+      - not_null
+  - name: order_date
+    description: Date when the order was placed.
+    tests:
+      - not_null
+  - name: order_hour
+    description: Hour when the order was placed, this is extracted from the orderdate.
+    tests:
+      - not_null
+  
+- name: dim_products
+  description: Dimension table containing product details.
+  columns:
+  - name: productid
+    description: Unique identifier for each product.
+    tests:
+      - unique
+      - not_null
+  - name: productname
+    description: Name of the product.
+    tests:
+      - not_null
+  - name: product_category
+    description: Category to which the product belongs.
+    tests:
+      - not_null
+  - name: stock_quantity
+    description: Available stock quantity for the product.
+    tests:
+      - not_null
+  - name: unit_price
+    description: Price per unit of the product.
+    tests:
+      - not_null
+
+- name: dim_socialmediaposts
+  description: Dimension table containing social media post details.
+  columns:
+  - name: timestamp
+    description: Timestamp when the record was created or updated.
+    tests:
+      - not_null
+  - name: platform
+    description: Social media platform (e.g., Facebook, Twitter).
+    tests:  
+      - not_null
+  - name: content
+    description: Content of the social media post.
+
+  - name: sentiment
+    description: Sentiment analysis result of the post (e.g., positive, negative, neutral)
+    tests:
+      - accepted_values:
+          arguments:
+            values: ['positive', 'negative', 'neutral']
+ 
+
+- name: dim_web_logs
+  description: Dimension table containing web log details.
+  columns:
+  - name: customerid
+    description: Foreign key from the dim_customers table.
+    tests:
+      - unique
+      - not_null
+  - name: timestamp
+    description: Timestamp of the web log entry.
+  - name: page
+    description: specific identifier of the page/module visited.
+  - name: action
+    description: Action performed by the customer on the page (e.g., click, view).
+
+- name: fact_reviews
+  description: Fact table capturing customer reviews.
+  columns:
+  - name: reviewid
+    description: Unique identifier for each review.
+    tests:
+      - unique
+      - not_null
+  - name: customerid
+    description: Foreign key linking to the dim_customers table.
+    tests:
+      - not_null
+  - name: productid
+    description: Foreign key linking to the dim_products table.
+    tests:
+      - not_null
+  - name: product_rating
+    description: Rating given by the customer.
+    tests:
+      - not_null
+      - accepted_values:
+          arguments:
+            values: [1, 2, 3, 4, 5]
+  - name: review_comment
+    description: Text content of the review.
+  - name: review_timestamp
+    description: Timestamp when the review was submitted.
+    tests:
+      - not_null

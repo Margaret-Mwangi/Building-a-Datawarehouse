@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: socialmedia
+    schema: Raw
+    tables:
+      - name: customers
+        identifier: customers
+      - name: orders
+        identifier: orders
+      - name: products
+        identifier: products
+      - name: reviews
+        identifier: reviews
+      - name: social_media_sentiments
+        identifier: social_media_sentiments
+      - name: web_logs
+        identifier: web_logs
