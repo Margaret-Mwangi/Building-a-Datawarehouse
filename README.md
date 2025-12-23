@@ -1,92 +1,144 @@
-Building a Data Warehouse from Scratch
-🎯 Project Overview
+# Building a Data Warehouse from Scratch
 
-This project represents my journey into data/analytics engineering — from raw data to a fully-fledged data warehouse, orchestrated end-to-end. The goal was to design and build a scalable, maintainable analytical pipeline that:
+## 🎯 Project Overview
 
-Ingests raw data (EL)
+This project represents my journey into **data / analytics engineering** — taking data from raw ingestion to a fully modeled, analytics-ready warehouse.
 
-Loads raw data into Snowflake
+The goal of this project is to design and build a **scalable, maintainable, end-to-end data pipeline** that demonstrates real-world data engineering best practices, including ingestion, transformation, modeling, historization, and orchestration.
 
-Applies transformations using the Medallion Architecture (Bronze → Silver → Gold)
+At a high level, this project:
 
-Implements Slowly Changing Dimensions (SCD) using dbt snapshots
+- Ingests raw data from source systems (EL)
+- Loads raw data into a cloud data warehouse
+- Applies transformations using the **Medallion Architecture** (Bronze → Silver → Gold)
+- Implements **Slowly Changing Dimensions (SCD)** using dbt snapshots
+- Models clean, analytics-ready fact and dimension tables
+- Orchestrates pipelines using a workflow orchestration tool
 
-Models clean, analytics-ready data for reporting and analysis
+This project is fully version-controlled and designed to be reproducible and extensible.
 
-Orchestrates pipelines using Dagster
+---
 
-This project demonstrates a real-world data engineering skillset: data ingestion, transformation, modeling, testing, orchestration — all version-controlled and reproducible.
+## 🧱 Architecture & Components
 
-🧱 Architecture & Components
-📦 Tech Stack
+### 📦 Tech Stack
 
-Snowflake — data warehouse for raw, staged, and production data
+- **Data Warehouse:** Snowflake
+- **Transformation Tool:** dbt (models, tests, snapshots)
+- **Orchestration:** Dagster
+- **Version Control:** GitHub
 
-dbt — transformations, testing, data modeling, and SCD tracking using snapshots
+---
 
-Dagster — orchestration, scheduling, and pipeline management
+## 🧊 Medallion Architecture (Bronze → Silver → Gold)
 
-GitHub — version control and project documentation
+This project follows the **Medallion Architecture**, a layered approach to organizing data within a modern data warehouse.
 
-🧊 Medallion Architecture (Bronze → Silver → Gold)
+### 🥉 Bronze Layer (Raw)
+- Raw ingested data from source systems
+- Minimal transformation
+- Preserves original structure for auditability and replay
 
-This project follows the Medallion Architecture — a layered approach to organizing data in a warehouse:
+### 🥈 Silver Layer (Cleaned / Standardized)
+- Data cleansing and normalization
+- Deduplication and standardization
+- Business rules applied using dbt models
 
-Bronze (Raw Layer)
-Raw ingested data from source systems, stored with minimal transformation for auditability.
+### 🥇 Gold Layer (Business / Analytics)
+- Analytics-ready fact and dimension tables
+- Optimized for BI tools, dashboards, and reporting
+- Clear grain and business definitions
 
-Silver (Cleaned / Standardized Layer)
-Data cleansing, standardization, deduplication, and business rule application using dbt models.
+This architecture improves:
+- Clarity and separation of concerns
+- Scalability and maintainability
+- Change management and debugging
 
-Gold (Business / Analytics Layer)
-Final business-ready facts and dimensions optimized for dashboards, analytics, and reporting.
+---
 
-This architecture improves clarity, reproducibility, scalability, and change management in analytical projects.
+## 🧾 Slowly Changing Dimensions (SCD) with dbt Snapshots
 
-🧾 Slowly Changing Dimensions (SCD) with Snapshots
+This project implements **Slowly Changing Dimensions (SCD)** using **dbt snapshots**, located in the `/snapshots` directory.
 
-This project incorporates SCD historization using dbt snapshots stored under the /snapshots directory.
+Snapshots allow historical tracking of dimension records over time, enabling time-based analysis of evolving entities.
 
-Snapshots allow us to track changes in dimension records over time — useful for understanding evolving entities such as customers, products, subscriptions, etc.
+Key features:
+- dbt snapshot configuration
+- Row-level change detection
+- Automatic version history creation
+- Supports auditing and time-travel analytics
 
-Uses dbt’s snapshot configuration
+This enables questions such as:
+- What did this record look like at a specific point in time?
+- How have customer or product attributes changed over time?
 
-Compares row values over time
+---
 
-Creates version history
+## 🚀 End-to-End Workflow
 
-Supports auditing and time-travel style analytics
+1. Ingest raw data into the warehouse (Bronze layer)
+2. Apply Silver transformation models in dbt  
+   - Cleaning  
+   - Standardization  
+   - Business logic  
+3. Build Gold models for analytics  
+   - Fact tables  
+   - Dimension tables  
+4. Run dbt snapshots to preserve historical changes
+5. Orchestrate and schedule pipelines using Dagster
 
-This is a key feature of modern data warehouses, allowing analytics teams to answer questions like:
+---
 
-What did this record look like last month?
+## 📂 Repository Structure
 
-How have customer attributes changed over time?
+```text
+.
+├── models/
+│   ├── bronze/
+│   ├── silver/
+│   └── gold/
+├── snapshots/
+├── tests/
+├── dbt_project.yml
+└── README.md
 
-🚀 Workflow: From Raw Data to Analytics
+```
 
-Load raw data into Snowflake (Bronze layer)
 
-Apply Silver transformation models in dbt
+## 📚 What I Learned from This Project
 
-Cleansing, normalization, and business logic
+Designing modern data warehouses using the Medallion Architecture
 
-Apply Gold models for final marts
+Building well-defined fact and dimension tables
 
-Fact and dimension tables, optimized for BI
+Implementing Slowly Changing Dimensions (SCD) with dbt snapshots
 
-Run dbt snapshots to preserve SCD history
+Writing modular, testable SQL transformations
 
-Orchestrate all steps in Dagster
+Applying data quality checks and best practices
 
-📚 What I learnt from This Project
+Orchestrating reliable, production-style data pipelines
 
-Modern data warehousing design using the Medallion (Bronze / Silver / Gold) architecture
+Managing data projects with version control and reproducibility in mind
 
-How to build dimension and fact tables in Snowflake
+## 🔮 Future Improvements
 
-How to implement Slowly Changing Dimensions (SCD) using dbt snapshots
+Add automated data quality monitoring
 
-Best practices in transformation, modular SQL, testing, and data quality
+Integrate a BI tool for reporting and dashboards
 
-Version-controlled, orchestrated pipelines using Dagster
+Extend snapshot coverage to additional dimensions
+
+Optimize models for performance and cost
+
+Add CI/CD checks for dbt models
+
+👤 Author
+
+**Margaret Mwangi**
+
+**Analytics Engineer**
+
+GitHub: **https://github.com/Margaret-Mwangi**
+
+LinkedIn: **https://www.linkedin.com/in/margaretwmwangi/**
